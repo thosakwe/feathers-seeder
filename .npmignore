@@ -1,0 +1,10 @@
+.git*
+docs/
+test/
+.DS_Store
+*.markdown
+*.md
+!lib/
+src/
+.babelrc
+.editorconfig

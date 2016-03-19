@@ -1,0 +1,58 @@
+{
+  "name": "feathers-seeder",
+  "version": "0.0.1-dev",
+  "description": "Straightforward data seeder for FeathersJS services.",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "npm run compile",
+    "publish": "git push origin && git push origin --tags",
+    "release:prerelease": "npm version prerelease && npm publish",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish",
+    "compile": "rimraf lib/ && babel -d lib/ src/",
+    "watch": "babel --watch -d lib/ src/",
+    "jshint": "jshint src/. test/. --config",
+    "mocha": "mocha test/ --compilers js:babel-core/register",
+    "test": "npm run compile && npm run jshint && npm run mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thosakwe/feathers-seeder"
+  },
+  "keywords": [
+    "feathers",
+    "feathers-plugin"
+  ],
+  "author": {
+    "name": "Tobe O",
+    "email": "thosakwe@gmail.com",
+    "url": "https://blog.thosakwe.com"
+  },
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/thosakwe/feathers-seeder/issues"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "GPL-3.0",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-core": "^6.7.2",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-preset-es2015": "^6.6.0",
+    "feathers-memory": "^0.6.3",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "faker": "^3.0.1",
+    "feathers": "^2.0.0",
+    "feathers-errors": "^2.0.1",
+    "feathers-hooks": "^1.5.0"
+  }
+}
