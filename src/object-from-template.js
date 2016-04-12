@@ -45,7 +45,7 @@ function _populate(key, value, faker, opts) {
     if (opts.debug === true) {
         console.info(`This is a ${typeof value}`);
     }
-    return _populate('nested', value, faker, opts);
+    return compile(value, faker, opts);
   }
 }
 

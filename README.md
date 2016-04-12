@@ -1,4 +1,7 @@
 # feathers-seeder
+
+![v1.0.0-beta](https://img.shields.io/badge/version-1.0.0--beta-blue.svg)
+
 Straightforward data seeder for FeathersJS services.
 
 * [About](#about)
@@ -18,7 +21,7 @@ This can really be useful for projects using feathers-memory, or feathers-nedb t
 
 # Installation
 These magic words will do the trick:
-> npm install --save-dev feathers-seeder
+> npm install --save feathers-seeder
 
 # Usage
 1.  [Configure](#configuration) the seeder.
@@ -26,12 +29,13 @@ These magic words will do the trick:
 
   Example:
   ```js
-  const app = feathers().configure(hooks);
+  const app = feathers().configure(hooks());
   app
     .configure(seeder(app.get('seeder')))
-    .seed().then(() => {
-        app.listen(3000);
-      });
+    .seed()
+    .then(() => {
+      app.listen(3000);
+    });
   ```
 
 # Configuration

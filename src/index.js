@@ -14,7 +14,13 @@ function reportError(opts) {
 
 export default (opts = {}) => {
   if (opts === false || opts.disabled === true) {
-    return;
+    return function() {
+      if (opts.debug === true) {
+          console.info('Seeder is disabled, so nothing is being inserted into the database.');
+      }
+
+      this.seed = emptyPromise.array;
+    };
   }
 
   if(!opts.services || !(opts.services instanceof Array)) {
@@ -38,10 +44,18 @@ export default (opts = {}) => {
 
         const service = app.service(serviceConfig.path);
         const additionalParams = Object.assign({}, opts.params, serviceConfig.params);
+        if (opts.debug === true) {
+            console.info('Additional params:', additionalParams);
+        }
+
         const count = Number(serviceConfig.count) || 1;
 
         // Delete from service, if necessary
         let shouldDelete = opts.delete !== false && serviceConfig.delete !== false;
+        if (!shouldDelete && opts.debug === true) {
+            console.info(`Not deleting any items from ${serviceConfig.path}...`);
+        }
+
         let deletePromise = shouldDelete ? service.remove(null, additionalParams) : emptyPromise.array();
         return deletePromise.then(deleted => {
           if (opts.debug === true) {
@@ -49,7 +63,7 @@ export default (opts = {}) => {
           }
 
           // Now, let's seed the app.
-          if (serviceConfig.template) {
+          if (serviceConfig.template && serviceConfig.disabled !== true) {
             // Single template
             for (let i = 0; i < count; i++) {
               let compiled = compile(serviceConfig.template, faker, opts);
@@ -57,11 +71,11 @@ export default (opts = {}) => {
                 console.info('Compiled template:', compiled);
               }
 
-              createPromises.push(service.create(compiled, additionalParams, opts));
+              createPromises.push(service.create(compiled, additionalParams));
             }
           }
 
-          else if (serviceConfig.templates) {
+          else if (serviceConfig.templates && serviceConfig.disabled !== true) {
             // Multiple templates
             for (let i = 0; i < count; i++) {
               let template = serviceConfig.templates[Math.floor(Math.random() * serviceConfig.templates.length)];
@@ -73,6 +87,10 @@ export default (opts = {}) => {
               createPromises.push(service.create(compiled, additionalParams));
             }
           }
+
+          else if (opts.debug === true) {
+              console.info(`Seeder is disabled for ${serviceConfig.path}, so nothing is being inserted into the database.`);
+          }
         }).catch(reportError(opts));
       });
 
@@ -80,6 +98,16 @@ export default (opts = {}) => {
         if (opts.debug === true) {
           console.info(`Created ${created.length} items:`, created);
         }
+        // Todo: Passing additional params causes a delay and the Promise returns before seeding is actually complete.
+        return new Promise((resolve) => {
+          setTimeout(function() {
+            if (opts.debug === true) {
+              console.info('Sorry for the delay...');
+            }
+
+            resolve(created);
+          }, 50);
+        });
       }).catch(reportError(opts));
     };
   };

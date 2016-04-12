@@ -35,7 +35,7 @@ describe('feathers-seeder', () => {
         .use('/dummy', memory())
         .use('/user', memory())
         .use('/multiple_templates', memory())
-        .configure(seeder({services, debug: true}));
+        .configure(seeder({services}));
 
       app.seed().then(() => {
         return app.service('dummy').find().then(items => {
