@@ -14,23 +14,23 @@ function reportError(opts) {
 
 export default (opts = {}) => {
   if (opts === false || opts.disabled === true) {
-    return function() {
+    return () => {
       if (opts.debug === true) {
-          console.info('Seeder is disabled, so nothing is being inserted into the database.');
+        console.info('Seeder is disabled, so nothing is being inserted into the database.');
       }
 
       this.seed = emptyPromise.array;
     };
   }
 
-  if(!opts.services || !(opts.services instanceof Array)) {
+  if (!opts.services || !(opts.services instanceof Array)) {
     throw new errors.BadRequest('You must include an array of services to be seeded.');
   }
 
-  return function() {
+  return function () {
     const app = this;
 
-    app.seed = function() {
+    app.seed = function () {
       let createPromises = [];
 
       opts.services.forEach(serviceConfig => {
@@ -45,7 +45,7 @@ export default (opts = {}) => {
         const service = app.service(serviceConfig.path);
         const additionalParams = Object.assign({}, opts.params, serviceConfig.params);
         if (opts.debug === true) {
-            console.info('Additional params:', additionalParams);
+          console.info('Additional params:', additionalParams);
         }
 
         const count = Number(serviceConfig.count) || 1;
@@ -53,10 +53,10 @@ export default (opts = {}) => {
         // Delete from service, if necessary
         let shouldDelete = opts.delete !== false && serviceConfig.delete !== false;
         if (!shouldDelete && opts.debug === true) {
-            console.info(`Not deleting any items from ${serviceConfig.path}...`);
+          console.info(`Not deleting any items from ${serviceConfig.path}...`);
         }
 
-        let deletePromise = shouldDelete ? service.remove(null, additionalParams) : emptyPromise.array();
+        let deletePromise = shouldDelete ? service.remove(additionalParams) : emptyPromise.array();
         return deletePromise.then(deleted => {
           if (opts.debug === true) {
             console.info(`Deleted ${deleted.length} items from ${serviceConfig.path}`);
@@ -89,7 +89,7 @@ export default (opts = {}) => {
           }
 
           else if (opts.debug === true) {
-              console.info(`Seeder is disabled for ${serviceConfig.path}, so nothing is being inserted into the database.`);
+            console.info(`Seeder is disabled for ${serviceConfig.path}, so nothing is being inserted into the database.`);
           }
         }).catch(reportError(opts));
       });
@@ -98,9 +98,9 @@ export default (opts = {}) => {
         if (opts.debug === true) {
           console.info(`Created ${created.length} items:`, created);
         }
-        // Todo: Passing additional params causes a delay and the Promise returns before seeding is actually complete.
+        // Remember: Passing additional params causes a delay and the Promise returns before seeding is actually complete.
         return new Promise((resolve) => {
-          setTimeout(function() {
+          setTimeout(function () {
             if (opts.debug === true) {
               console.info('Sorry for the delay...');
             }
