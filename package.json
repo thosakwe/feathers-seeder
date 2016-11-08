@@ -1,11 +1,12 @@
 {
   "name": "feathers-seeder",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "Straightforward data seeder for FeathersJS services.",
   "main": "lib/index.js",
   "scripts": {
+    "postinstall": "npm run compile",
     "prepublish": "npm run compile",
-    "publish": "npm run test && git push origin && git push origin --tags",
+    "publish": "npm run test && git add . && git commit -m \"published\" && git push origin master",
     "release:prerelease": "npm version prerelease && npm publish",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",

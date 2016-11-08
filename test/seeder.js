@@ -7,35 +7,35 @@ import seeder from '../lib';
 describe('feathers-seeder', () => {
   describe('basic', () => {
     it('can seed a basic in-memory service', done => {
-      const services = [
-        {
-          path: 'dummy',
-          template: {
-            name: '{{name.firstName}} {{name.lastName}}'
-          }
-        },
-        {
-          count: 24,
-          path: 'user',
-          template: {
-            username: '{{internet.userName}}'
-          }
-        },
-        {
-          count: 10,
-          path: 'multiple_templates',
-          templates: [
-            {username: '{{internet.userName}}'},
-            {password: '{{internet.password}}'}
-          ]
+      const services = [{
+        path: 'dummy',
+        template: {
+          name: '{{name.firstName}} {{name.lastName}}'
         }
-      ];
+      }, {
+        count: 24,
+        path: 'user',
+        template: {
+          username: '{{internet.userName}}'
+        }
+      }, {
+        count: 10,
+        path: 'multiple_templates',
+        templates: [{
+          username: '{{internet.userName}}'
+        }, {
+          password: '{{internet.password}}'
+        }]
+      }];
       const app = feathers()
         .configure(hooks)
         .use('/dummy', memory())
         .use('/user', memory())
         .use('/multiple_templates', memory())
-        .configure(seeder({services}));
+        .configure(seeder({
+          services,
+          debug: true
+        }));
 
       app.seed().then(() => {
         return app.service('dummy').find().then(items => {

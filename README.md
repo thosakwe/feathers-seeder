@@ -1,6 +1,6 @@
 # feathers-seeder
 
-![v1.0.0-beta](https://img.shields.io/badge/version-1.0.0--beta-blue.svg)
+![v1.0.0](https://img.shields.io/badge/version-1.0.0-green.svg)
 
 Straightforward data seeder for FeathersJS services.
 
@@ -96,6 +96,40 @@ Example:
 
 * templates: `Object[]` - An array of templates. Each time an object is to be generated, a random template will be chosen.
 
+* callback: `Function(obj, cb)` - You can register a callback each time a database record is created. This allows you to seed
+nested services. :) *Callbacks MUST return a `Promise`.*
+
+```js
+{
+  services: [
+    {
+      count: 100,
+      path: 'users',
+      template: {
+        name: '{{name.firstName}} {{name.lastName}}'
+      },
+
+      callback(user, seed) {
+        console.info(`Happy birthday to ${user.name}!`);
+
+        // Call `seed` with regular service configuration.
+        // This will return a Promise.
+
+        return seed({
+          path: 'users/:userId/posts',
+          params: {
+            userId: user._id
+          },
+          template: {
+            text: "It's my birthday! :)"
+          }
+        });
+      }
+    }
+  ]
+}
+```
+
 # Example
 ```js
 import feathers from 'feathers';
@@ -114,6 +148,7 @@ const options = {
     }
   ]
 };
+
 const app = feathers()
               .use('/users', memory())
               .configure(seeder(options));
