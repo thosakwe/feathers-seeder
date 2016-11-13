@@ -1,10 +1,9 @@
 {
   "name": "feathers-seeder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Straightforward data seeder for FeathersJS services.",
   "main": "lib/index.js",
   "scripts": {
-    "postinstall": "npm run compile",
     "prepublish": "npm run compile && npm run test",
     "release:prerelease": "npm version prerelease && npm publish",
     "release:patch": "npm version patch && npm publish",
