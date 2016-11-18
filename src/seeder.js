@@ -49,6 +49,7 @@ export default class Seeder {
       const service = this.app.service(cfg.path);
       const params = Object.assign({}, this.opts.params, cfg.params);
       const count = Number(cfg.count) || 1;
+      const randomize = cfg.randomize || true;
       this.printDebug(`Params seeding '${cfg.path}':`, params);
       this.printDebug(`Creating ${count} instance(s)`);
 
@@ -96,10 +97,19 @@ export default class Seeder {
             promises.push(pushPromise(cfg.template));
           }
         } else if (cfg.templates && cfg.disabled !== true) {
-          // Multiple templates
-          for (let i = 0; i < count; i++) {
-            let template = cfg.templates[Math.floor(Math.random() * cfg.templates.length)];
-            promises.push(pushPromise(template));
+          // Multiple random templates
+          if (randomize) {
+            for (let i = 0; i < count; i++) {
+              let template = cfg.templates[Math.floor(Math.random() * cfg.templates.length)];
+              promises.push(pushPromise(template));
+            }
+          }
+          // All templates
+          else {
+            for (let i = 0; i < cfg.templates.length; i++) {
+              let template = cfg.templates[i];
+              promises.push(pushPromise(template));
+            }
           }
         }
 
