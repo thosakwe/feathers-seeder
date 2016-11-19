@@ -12,7 +12,6 @@
     "compile": "rimraf lib/ && babel -d lib/ src/",
     "watch": "babel --watch -d lib/ src/",
     "jshint": "jshint src/. test/. --config",
-    "postinstall": "node -e \"require('fs').stat('lib', function (e, s) { process.exit(e || !s.isDirectory() ? 1 : 0) })\" || npm run compile",
     "mocha": "mocha test/ --compilers js:babel-core/register",
     "test": "npm run compile && npm run jshint && npm run mocha"
   },
