@@ -1,6 +1,6 @@
 # feathers-seeder
 
-![v1.0.0](https://img.shields.io/badge/version-1.0.0-green.svg)
+![v1.0.5](https://img.shields.io/badge/version-1.0.0-green.svg)
 ![build status](https://api.travis-ci.org/thosakwe/feathers-seeder.svg?branch=master)
 
 Straightforward data seeder for FeathersJS services.
