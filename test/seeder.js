@@ -86,7 +86,7 @@ describe('feathers-seeder', () => {
         }).catch(done);
 
         app.service(`${ALL.path}`).find().then(items => {
-          assert.equal(items.length, RANDOM.templates.length);
+          assert.equal(items.length, ALL.templates.length);
           console.log(`Seeded ${items.length}`);
         }).catch(done);
 
