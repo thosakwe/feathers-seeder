@@ -80,6 +80,8 @@ Example:
 
 * path: `String` - The path to the service to be seeded.
 
+* randomize: `Boolean` - (default true) - The seeder will pick a random template to generate the item for the service.
+
 * template: `Object` - A template object defining the structure of each object generated. For dynamic data, you can provide template strings, as feathers-seeder uses **[@marak/Faker.js](https://github.com/marak/Faker.js/)** internally.
 
   Example:
@@ -94,7 +96,8 @@ Example:
   }
   ```
 
-* templates: `Object[]` - An array of templates. Each time an object is to be generated, a random template will be chosen.
+* templates: `Object[]` - An array of templates. If the option `randomize` is true, each time an object is to be generated,
+a random template will be chosen.  Otherwise, all templates will be generated for the service.
 
 * callback: `Function(obj, cb)` - You can register a callback each time a database record is created. This allows you to seed
 nested services. :) *Callbacks MUST return a `Promise`.*
