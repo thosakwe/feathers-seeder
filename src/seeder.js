@@ -49,7 +49,7 @@ export default class Seeder {
       const service = this.app.service(cfg.path);
       const params = Object.assign({}, this.opts.params, cfg.params);
       const count = Number(cfg.count) || 1;
-      const randomize = cfg.randomize || true;
+      const randomize = typeof cfg.randomize === undefined ? true : cfg.randomize;
       this.printDebug(`Params seeding '${cfg.path}':`, params);
       this.printDebug(`Creating ${count} instance(s)`);
 
