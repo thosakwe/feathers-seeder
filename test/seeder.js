@@ -7,50 +7,90 @@ import seeder from '../lib';
 describe('feathers-seeder', () => {
   describe('basic', () => {
     it('can seed a basic in-memory service', done => {
-      const services = [{
-        path: 'dummy',
+      const SINGLE = {
+        path: 'single',
         template: {
           name: '{{name.firstName}} {{name.lastName}}'
         }
-      }, {
+      };
+      const MULTIPLE = {
+        path: 'multiple',
         count: 24,
-        path: 'user',
         template: {
           username: '{{internet.userName}}'
         }
-      }, {
+      };
+      const RANDOM = {
+        path: 'random',
         count: 10,
-        path: 'multiple_templates',
         templates: [{
           username: '{{internet.userName}}'
         }, {
           password: '{{internet.password}}'
         }]
-      }];
+      };
+      const ALL = {
+        path: 'all',
+        randomize: false,
+        templates: [{
+          username: '{{internet.userName}}',
+          age: 34,
+          updatedAt: new Date(),
+          profileMedium: `https://dgalywyr863hv.cloudfront.net/pictures/athletes/411352/88294/1/medium.jpg`,
+          active: true,
+          location: {
+            lat: 45.3455656,
+            lng: -45.2656565
+          }
+        }, {
+          username: '{{internet.userName}}',
+          age: 33,
+          updatedAt: new Date(),
+          profileMedium: `https://dgalywyr863hv.cloudfront.net/pictures/athletes/411352/88294/1/medium.jpg`,
+          active: false,
+          location: {
+            lat: 45.3455656,
+            lng: -45.2656565
+          }
+        }]
+      };
+
+      const services = [];
+      services.push(SINGLE, MULTIPLE, RANDOM,ALL);
+
       const app = feathers()
         .configure(hooks)
-        .use('/dummy', memory())
-        .use('/user', memory())
-        .use('/multiple_templates', memory())
+        .use(`/${SINGLE.path}`, memory())
+        .use(`/${MULTIPLE.path}`, memory())
+        .use(`/${RANDOM.path}`, memory())
+        .use(`/${ALL.path}`, memory())
         .configure(seeder({
           services,
           debug: true
         }));
 
       app.seed().then(() => {
-        return app.service('dummy').find().then(items => {
+        app.service(`${SINGLE.path}`).find().then(items => {
           assert.equal(items.length, 1);
-          console.log('1 dummy:', items[0]);
-          return app.service('user').find().then((users) => {
-            assert.equal(users.length, 24);
-            console.log('24 users:', users);
-            return app.service('multiple_templates').find().then(items => {
-              assert.equal(items.length, 10);
-              console.log('10 arbitrary items:', items);
-              done();
-            }).catch(done);
-          }).catch(done);
+          console.log(`Seeded ${items.length}`);
         }).catch(done);
+
+        app.service(`${MULTIPLE.path}`).find().then(items => {
+          assert.equal(items.length, MULTIPLE.count);
+          console.log(`Seeded ${items.length}`);
+        }).catch(done);
+
+        app.service(`${RANDOM.path}`).find().then(items => {
+          assert.equal(items.length, RANDOM.count);
+          console.log(`Seeded ${items.length}`);
+        }).catch(done);
+
+        app.service(`${ALL.path}`).find().then(items => {
+          assert.equal(items.length, RANDOM.templates.length);
+          console.log(`Seeded ${items.length}`);
+        }).catch(done);
+
+        done();
       }).catch(done);
     });
   });

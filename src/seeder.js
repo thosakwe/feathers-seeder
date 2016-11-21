@@ -46,11 +46,16 @@ export default class Seeder {
         throw new Error('You must specify a template or array of templates for seeded objects.');
       }
 
+      if (cfg.count && cfg.randomize === false) {
+        throw new Error('You may not specify both randomize = false with count');
+      }
+
       const service = this.app.service(cfg.path);
       const params = Object.assign({}, this.opts.params, cfg.params);
       const count = Number(cfg.count) || 1;
-      const randomize = typeof cfg.randomize === undefined ? true : cfg.randomize;
+      const randomize = typeof cfg.randomize === 'undefined' ? true : cfg.randomize;
       this.printDebug(`Params seeding '${cfg.path}':`, params);
+      this.printDebug(`Param randomize: ${randomize}`);
       this.printDebug(`Creating ${count} instance(s)`);
 
       // Delete from service, if necessary
@@ -100,7 +105,9 @@ export default class Seeder {
           // Multiple random templates
           if (randomize) {
             for (let i = 0; i < count; i++) {
-              let template = cfg.templates[Math.floor(Math.random() * cfg.templates.length)];
+              let idx = Math.floor(Math.random() * cfg.templates.length);
+              let template = cfg.templates[idx];
+              this.printDebug(`Picked random template index ${idx}`);
               promises.push(pushPromise(template));
             }
           }
