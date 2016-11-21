@@ -17,7 +17,7 @@ function _populate(key, value, faker, opts) {
       console.info(`Populating ${key} from this value:`, value);
   }
 
-  if (value instanceof Number || value instanceof Boolean || value instanceof Date ||
+  if (typeof value === 'number' || typeof value === 'boolean' || value instanceof Date ||
       value === null || value === undefined) {
         if (opts.debug === true) {
             console.info('This is a primitive.');
