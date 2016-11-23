@@ -1,13 +1,13 @@
 import errors from 'feathers-errors';
 import Seeder from './seeder';
 
+const debug = require('debug')('feathers-seeder');
+
 export default function seeder(opts = {}) {
   if (opts === false || opts.disabled === true) {
     return function() {
       this.seed = () => {
-        if (opts.debug === true) {
-          console.info('Seeder is disabled, not modifying database.');
-        }
+        debug('Seeder is disabled, not modifying database.');
 
         return Promise.resolve([]);
       };
@@ -24,9 +24,7 @@ export default function seeder(opts = {}) {
 
     app.seed = () => {
       return seeder.seedApp().then().catch(err => {
-        if (opts.debug === true) {
-          console.error('Seeding error:', err);
-        }
+        debug(`Seeding error: ${err}`);
 
         throw new errors.GeneralError(err);
       });

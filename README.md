@@ -41,7 +41,7 @@ These magic words will do the trick:
 # Configuration
 feathers-seeder should be called as a function, with a single configuration object as a parameter.
 
-To enable debug logging, pass `debug: true`.
+To enable debug output logging, set the [`DEBUG`](https://github.com/visionmedia/debug#usage) env variable accordingly (e.g. `DEBUG=*`)
 
 All data in the service will be wiped before seeding, unless `delete` is set to `false`. It is `true` by default.
 

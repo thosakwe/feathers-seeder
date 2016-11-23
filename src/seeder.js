@@ -1,6 +1,8 @@
 import compile from './object-from-template';
 import casual from 'casual';
 
+const debug = require('debug')('feathers-seeder');
+
 export default class Seeder {
   constructor(app, opts) {
     this.app = app;
@@ -11,14 +13,8 @@ export default class Seeder {
     return compile(template, casual, this.opts);
   }
 
-  printDebug() {
-    if (this.opts.debug === true) {
-      console.log.apply(console, arguments);
-    }
-  }
-
   seedApp() {
-    this.printDebug('Seeding app...');
+    debug('Seeding app...');
 
     return new Promise((resolve, reject) => {
       const promises = [];
@@ -27,10 +23,10 @@ export default class Seeder {
         promises.push(this.seed(cfg));
       }
 
-      this.printDebug(`Running ${promises.length} seeder(s)...`);
+      debug(`Running ${promises.length} seeder(s)...`);
 
       return Promise.all(promises).then(seeded => {
-        this.printDebug(`Created ${seeded.length} total items:`, seeded);
+        debug(`Created ${seeded.length} total items:`, seeded);
         return resolve(seeded);
       }).catch(reject);
     });
@@ -54,16 +50,16 @@ export default class Seeder {
       const params = Object.assign({}, this.opts.params, cfg.params);
       const count = Number(cfg.count) || 1;
       const randomize = typeof cfg.randomize === 'undefined' ? true : cfg.randomize;
-      this.printDebug(`Params seeding '${cfg.path}':`, params);
-      this.printDebug(`Param randomize: ${randomize}`);
-      this.printDebug(`Creating ${count} instance(s)`);
+      debug(`Params seeding '${cfg.path}':`, params);
+      debug(`Param randomize: ${randomize}`);
+      debug(`Creating ${count} instance(s)`);
 
       // Delete from service, if necessary
       const shouldDelete = this.opts.delete !== false &&
         cfg.delete !== false;
 
       if (!shouldDelete) {
-        this.printDebug(`Not deleting any items from ${cfg.path}.`);
+        debug(`Not deleting any items from ${cfg.path}.`);
       }
 
       const deletePromise = shouldDelete ?
@@ -71,21 +67,21 @@ export default class Seeder {
         Promise.resolve([]);
 
       return deletePromise.then(deleted => {
-        this.printDebug(`Deleted from '${cfg.path}:'`, deleted);
+        debug(`Deleted from '${cfg.path}:'`, deleted);
 
         const pushPromise = template => {
           return new Promise((resolve, reject) => {
             const compiled = this.compileTemplate(template);
-            this.printDebug('Compiled template:', compiled);
+            debug('Compiled template:', compiled);
 
             return service.create(compiled, params).then(created => {
-              this.printDebug('Created:', created);
+              debug('Created:', created);
 
               if (typeof cfg.callback !== 'function') {
                 return resolve(created);
               } else {
                 return cfg.callback(created, this.seed.bind(this)).then(result => {
-                  this.printDebug(`Result of callback on '${cfg.path}':`, result);
+                  debug(`Result of callback on '${cfg.path}':`, result);
                   return resolve(created);
                 }).catch(reject);
               }
@@ -107,7 +103,7 @@ export default class Seeder {
             for (let i = 0; i < count; i++) {
               let idx = Math.floor(Math.random() * cfg.templates.length);
               let template = cfg.templates[idx];
-              this.printDebug(`Picked random template index ${idx}`);
+              debug(`Picked random template index ${idx}`);
               promises.push(pushPromise(template));
             }
           }
@@ -121,7 +117,7 @@ export default class Seeder {
         }
 
         if (!promises.length) {
-          this.printDebug(`Seeder disabled for ${cfg.path}, not modifying database.`);
+          debug(`Seeder disabled for ${cfg.path}, not modifying database.`);
           return resolve([]);
         } else {
           return Promise.all(promises).then(resolve).catch(reject);

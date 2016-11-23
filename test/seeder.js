@@ -65,8 +65,7 @@ describe('feathers-seeder', () => {
         .use(`/${RANDOM.path}`, memory())
         .use(`/${ALL.path}`, memory())
         .configure(seeder({
-          services,
-          debug: true
+          services
         }));
 
       app.seed().then(() => {
