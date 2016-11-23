@@ -1,5 +1,5 @@
 import compile from './object-from-template';
-import faker from 'faker';
+import casual from 'casual';
 
 export default class Seeder {
   constructor(app, opts) {
@@ -8,7 +8,7 @@ export default class Seeder {
   }
 
   compileTemplate(template) {
-    return compile(template, faker, this.opts);
+    return compile(template, casual, this.opts);
   }
 
   printDebug() {

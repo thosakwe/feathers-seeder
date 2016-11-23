@@ -10,30 +10,30 @@ describe('feathers-seeder', () => {
       const SINGLE = {
         path: 'single',
         template: {
-          name: '{{name.firstName}} {{name.lastName}}'
+          name: '{{first_name}} {{last_name}}'
         }
       };
       const MULTIPLE = {
         path: 'multiple',
         count: 24,
         template: {
-          username: '{{internet.userName}}'
+          username: '{{username}}'
         }
       };
       const RANDOM = {
         path: 'random',
         count: 10,
         templates: [{
-          username: '{{internet.userName}}'
+          username: '{{username}}'
         }, {
-          password: '{{internet.password}}'
+          password: '{{password}}'
         }]
       };
       const ALL = {
         path: 'all',
         randomize: false,
         templates: [{
-          username: '{{internet.userName}}',
+          username: '{{username}}',
           age: 34,
           updatedAt: new Date(),
           profileMedium: `https://dgalywyr863hv.cloudfront.net/pictures/athletes/411352/88294/1/medium.jpg`,
@@ -43,7 +43,7 @@ describe('feathers-seeder', () => {
             lng: -45.2656565
           }
         }, {
-          username: '{{internet.userName}}',
+          username: '{{username}}',
           age: 33,
           updatedAt: new Date(),
           profileMedium: `https://dgalywyr863hv.cloudfront.net/pictures/athletes/411352/88294/1/medium.jpg`,

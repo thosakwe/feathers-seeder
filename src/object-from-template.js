@@ -1,4 +1,4 @@
-function compile(template, faker, opts = {}) {
+function compile(template, casual, opts = {}) {
   if (opts.debug === true) {
       console.info('About to compile this template:', template);
   }
@@ -6,13 +6,13 @@ function compile(template, faker, opts = {}) {
   let result = {};
   Object.keys(template).forEach(key => {
     let value = template[key];
-    result[key] = _populate(key, value, faker, opts);
+    result[key] = _populate(key, value, casual, opts);
   });
 
   return result;
 }
 
-function _populate(key, value, faker, opts) {
+function _populate(key, value, casual, opts) {
   if (opts.debug === true) {
       console.info(`Populating ${key} from this value:`, value);
   }
@@ -30,7 +30,7 @@ function _populate(key, value, faker, opts) {
         console.info('This is a string.');
     }
 
-    return faker.fake(value);
+    return casual.populate(value);
   }
 
   else if (Array.isArray(value)) {
@@ -38,14 +38,14 @@ function _populate(key, value, faker, opts) {
         console.info('This is an array.');
     }
 
-    return value.map(x => _populate(key, x, faker, opts));
+    return value.map(x => _populate(key, x, casual, opts));
   }
   // Otherwise, this is an object, and potentially a template itself
   else {
     if (opts.debug === true) {
         console.info(`This is a ${typeof value}`);
     }
-    return compile(value, faker, opts);
+    return compile(value, casual, opts);
   }
 }
 

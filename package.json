@@ -49,7 +49,7 @@
     "mocha": "^2.4.5"
   },
   "dependencies": {
-    "faker": "^3.0.1",
+    "casual": "^1.5.8",
     "feathers": "^2.0.0",
     "feathers-errors": "^2.0.1",
     "feathers-hooks": "^1.5.0",

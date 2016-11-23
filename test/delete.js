@@ -12,7 +12,7 @@ describe('deletions', function() {
         {
           count: 2,
           path: 'dummy',
-          template: { scooby: { dooby: 'doo' }, 'where are': '{{name.lastName}}' }
+          template: { scooby: { dooby: 'doo' }, 'where are': '{{last_name}}' }
         }
       ]
     };
@@ -35,7 +35,7 @@ describe('deletions', function() {
           count: 5,
           path: 'tickets',
           template: {
-            buyerName: '{{name.firstName}} {{name.lastName}}'
+            buyerName: '{{first_name}} {{last_name}}'
           }
         },
         {
@@ -43,7 +43,7 @@ describe('deletions', function() {
           count: 3,
           path: 'artists',
           template: {
-            john: '{{name.lastName}}'
+            john: '{{last_name}}'
           }
         }
       ]
