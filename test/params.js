@@ -9,7 +9,6 @@ describe('params', function() {
   it('can pass custom params globally', function(done) {
     const app = feathers().configure(hooks()).use('/dummy', memory());
     const config = {
-      debug: true,
       params: {
         hello: 'world'
       },
@@ -44,7 +43,6 @@ describe('params', function() {
   it('can pass custom params locally', function(done) {
     const app = feathers().configure(hooks()).use('/dummy', memory());
     const config = {
-      debug: true,
       services: [
         {
           params: {
@@ -69,7 +67,7 @@ describe('params', function() {
 
     app.configure(seeder(config)).seed().then(function(created) {
       console.log('Dummy created: ', created);
-      
+
       dummy.find().then(function(items) {
         assert.equal(items.length, 4);
         done();

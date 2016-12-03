@@ -9,7 +9,6 @@ describe('disable', function() {
     const app = feathers().configure(hooks()).use('/dummy', memory());
     const config =
     {
-      debug: true,
       disabled: true,
       services:
       [
