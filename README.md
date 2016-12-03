@@ -82,7 +82,9 @@ Example:
 
 * randomize: `Boolean` - (default true) - The seeder will pick a random template to generate the item for the service.
 
-* template: `Object` - A template object defining the structure of each object generated. For dynamic data, you can provide template strings, as feathers-seeder uses **[@marak/Faker.js](https://github.com/marak/Faker.js/)** internally.
+* template: `Object` - A template object defining the structure of each object generated. For dynamic data, you can provide:
+  - Template strings, as feathers-seeder uses **[@marak/Faker.js](https://github.com/marak/Faker.js/)** internally
+  - Custom parameterless functions
 
   Example:
   ```js
@@ -91,7 +93,8 @@ Example:
       username: "{{internet.userName}}",
       password: "{{internet.password}}"
       name: "{{name.firstName}} {{name.lastName}}",
-      email: "{{internet.email}}"
+      email: "{{internet.email}}",
+      lastLogin: () => moment().subtract(7, 'days').format()
     }
   }
   ```
