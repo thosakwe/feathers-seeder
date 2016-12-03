@@ -1,5 +1,4 @@
-import compile from './object-from-template';
-import faker from 'faker';
+import Compiler from './compiler';
 
 const debug = require('debug')('feathers-seeder');
 
@@ -7,10 +6,12 @@ export default class Seeder {
   constructor(app, opts) {
     this.app = app;
     this.opts = opts;
+
+    this.compiler = new Compiler(opts.generators);
   }
 
   compileTemplate(template) {
-    return compile(template, faker, this.opts);
+    return this.compiler.compile(template);
   }
 
   seedApp() {
