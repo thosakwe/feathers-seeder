@@ -1,18 +1,18 @@
 const debug = require('debug')('feathers-seeder');
 
-function compile(template, casual, opts = {}) {
+function compile(template, faker, opts = {}) {
   debug(`About to compile template: ${template}`);
 
   let result = {};
   Object.keys(template).forEach(key => {
     let value = template[key];
-    result[key] = _populate(key, value, casual, opts);
+    result[key] = _populate(key, value, faker, opts);
   });
 
   return result;
 }
 
-function _populate(key, value, casual, opts) {
+function _populate(key, value, faker, opts) {
   debug(`Populating key: ${key} from value: ${value}`);
 
   if (typeof value === 'number' || typeof value === 'boolean' || value instanceof Date ||
@@ -24,18 +24,18 @@ function _populate(key, value, casual, opts) {
   else if (value instanceof String || typeof value === 'string') {
     debug('Value is a string.');
 
-    return casual.populate(value);
+    return faker.fake(value);
   }
   else if (Array.isArray(value)) {
     debug('Value is an array.');
 
-    return value.map(x => _populate(key, x, casual, opts));
+    return value.map(x => _populate(key, x, faker, opts));
   }
   // Otherwise, this is an object, and potentially a template itself
   else {
     debug(`Value is a ${typeof value}`);
 
-    return compile(value, casual, opts);
+    return compile(value, faker, opts);
   }
 }
 

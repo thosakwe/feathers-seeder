@@ -62,7 +62,7 @@ Example:
     {
       path: 'users',
       template: {
-        text: "Hello, world!  I am {{first_name}}."
+        text: "Hello, world!  I am {{name.firstName}}."
       }
     }
   ]
@@ -82,16 +82,16 @@ Example:
 
 * randomize: `Boolean` - (default true) - The seeder will pick a random template to generate the item for the service.
 
-* template: `Object` - A template object defining the structure of each object generated. For dynamic data, you can provide template strings, as feathers-seeder uses **[@mboo1ean/casual](https://github.com/boo1ean/casual.js/)** internally.
+* template: `Object` - A template object defining the structure of each object generated. For dynamic data, you can provide template strings, as feathers-seeder uses **[@marak/Faker.js](https://github.com/marak/Faker.js/)** internally.
 
   Example:
   ```js
   {
     template: {
-      username: "{{usermame}}",
-      password: "{{password}}"
-      name: "{{first_name}} {{last_name}}",
-      email: "{{email}}"
+      username: "{{internet.userName}}",
+      password: "{{internet.password}}"
+      name: "{{name.firstName}} {{name.lastName}}",
+      email: "{{internet.email}}"
     }
   }
   ```
@@ -109,7 +109,7 @@ nested services. :) *Callbacks MUST return a `Promise`.*
       count: 100,
       path: 'users',
       template: {
-        name: '{{first_name}} {{last_name}}'
+        name: '{{name.firstName}} {{name.lastName}}'
       },
 
       callback(user, seed) {
@@ -146,7 +146,7 @@ const options = {
       path: 'users',
       count: 10,
       template: {
-        name: '{{first_name}} {{last_name}}'
+        name: '{{name.firstName}} {{name.lastName}}'
       }
     }
   ]
