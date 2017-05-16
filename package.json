@@ -1,6 +1,6 @@
 {
   "name": "feathers-seeder",
-  "version": "1.0.7",
+  "version": "1.0.7+1",
   "description": "Straightforward data seeder for FeathersJS services.",
   "main": "lib/index.js",
   "scripts": {
