@@ -1,4 +1,4 @@
-import errors from 'feathers-errors';
+import errors from '@feathersjs/errors';
 import Seeder from './seeder';
 
 const debug = require('debug')('feathers-seeder');

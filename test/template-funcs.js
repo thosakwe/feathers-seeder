@@ -1,13 +1,12 @@
 import assert from 'assert';
-import feathers from 'feathers';
-import hooks from 'feathers-hooks';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
 import seeder from '../lib';
 
 describe('feathers-seeder', () => {
   describe('custom-generator', () => {
     it('can seed a basic in-memory service with template funcs', done => {
-      const INDEX = 1; 
+      const INDEX = 1;
       const inc = (arg) => { return ++arg; };
       const opts = {
         services: [{
@@ -19,7 +18,6 @@ describe('feathers-seeder', () => {
       };
 
       const app = feathers()
-        .configure(hooks)
         .use(`/dummy`, memory())
         .configure(seeder(opts));
 

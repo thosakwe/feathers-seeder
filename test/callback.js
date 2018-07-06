@@ -1,12 +1,11 @@
 import assert from 'assert';
-import feathers from 'feathers';
-import hooks from 'feathers-hooks';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
 import seeder from '../lib';
 
 describe('callback', () => {
   it('can nest config', done => {
-    const app = feathers().configure(hooks());
+    const app = feathers();
     app.use('/albums', memory());
     app.use('/songs', memory());
 
