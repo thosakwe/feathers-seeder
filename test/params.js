@@ -1,13 +1,12 @@
 var assert = require('assert');
-var errors = require('feathers-errors');
-var feathers = require('feathers');
-var hooks = require('feathers-hooks');
+var errors = require('@feathersjs/errors');
+var feathers = require('@feathersjs/feathers');
 var memory = require('feathers-memory');
 var seeder = require('../lib');
 
 describe('params', function() {
   it('can pass custom params globally', function(done) {
-    const app = feathers().configure(hooks()).use('/dummy', memory());
+    const app = feathers().use('/dummy', memory());
     const config = {
       params: {
         hello: 'world'
@@ -23,11 +22,13 @@ describe('params', function() {
     const dummy = app.service('dummy');
 
     //Deny create if {hello:'world'} not present in params
-    dummy.before({
-      create: function(hook) {
-        if (hook.params.hello !== 'world') {
-          console.error('Invalid params', hook.params);
-          throw new errors.BadRequest({errors: ['Params must have {hello:"world"}']});
+    dummy.hooks({
+      before: {
+        create: function(hook) {
+          if (hook.params.hello !== 'world') {
+            console.error('Invalid params', hook.params);
+            throw new errors.BadRequest({errors: ['Params must have {hello:"world"}']});
+          }
         }
       }
     });
@@ -41,7 +42,7 @@ describe('params', function() {
   });
 
   it('can pass custom params locally', function(done) {
-    const app = feathers().configure(hooks()).use('/dummy', memory());
+    const app = feathers().use('/dummy', memory());
     const config = {
       services: [
         {
@@ -56,11 +57,13 @@ describe('params', function() {
     };
     const dummy = app.service('dummy');
     //Deny create if {hello:'world'} not present in params
-    dummy.before({
-      create: function(hook) {
-        if (hook.params.hello !== 'world') {
-          console.error('Invalid params', hook.params);
-          throw new errors.BadRequest({errors: ['Params must have {hello:"world"}']});
+    dummy.hooks({
+      before: {
+        create: function(hook) {
+          if (hook.params.hello !== 'world') {
+            console.error('Invalid params', hook.params);
+            throw new errors.BadRequest({errors: ['Params must have {hello:"world"}']});
+          }
         }
       }
     });

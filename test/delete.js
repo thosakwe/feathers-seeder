@@ -1,5 +1,5 @@
 var assert = require('assert');
-var feathers = require('feathers');
+var feathers = require('@feathersjs/feathers');
 var memory = require('feathers-memory');
 var seeder = require('../lib');
 

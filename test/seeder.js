@@ -1,6 +1,5 @@
 import assert from 'assert';
-import feathers from 'feathers';
-import hooks from 'feathers-hooks';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
 import seeder from '../lib';
 
@@ -59,7 +58,6 @@ describe('feathers-seeder', () => {
       services.push(SINGLE, MULTIPLE, RANDOM,ALL);
 
       const app = feathers()
-        .configure(hooks)
         .use(`/${SINGLE.path}`, memory())
         .use(`/${MULTIPLE.path}`, memory())
         .use(`/${RANDOM.path}`, memory())
