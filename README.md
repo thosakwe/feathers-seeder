@@ -1,7 +1,7 @@
 # feathers-seeder
 
 [![npm](https://img.shields.io/npm/v/feathers-seeder.svg)](https://www.npmjs.com/package/feathers-seeder)
-![build status](https://api.travis-ci.org/thosakwe/feathers-seeder.svg?branch=master)
+[![build status](https://api.travis-ci.org/thosakwe/feathers-seeder.svg?branch=master)](https://travis-ci.org/thosakwe/feathers-seeder)
 
 Straightforward data seeder for FeathersJS services.
 
